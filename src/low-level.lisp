@@ -79,7 +79,8 @@
         (setf (slot-value output-designator 'desig:data)
               (make-instance 'desig:object-designator-data
                 :object-identifier name
-                :pose pose-stamped-in-fixed-frame))
+                :pose pose-stamped-in-fixed-frame
+                :color '(0.5 0.5 0.5)))
         ;; (desig:equate input-designator output-designator)
         output-designator))))
 
