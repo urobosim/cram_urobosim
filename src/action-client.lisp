@@ -32,11 +32,14 @@
 (defparameter *perceive-action-timeout* 3.0
   "How many seconds to wait before returning from perceive action.")
 
-(actionlib-client:make-simple-action-client
- 'urobosim-action
- "perceive_object"
- "urobosim_msgs/PerceiveObjectAction"
- *perceive-action-timeout*)
+(defun make-urobosim-action-client ()
+  (actionlib-client:make-simple-action-client
+   'urobosim-action
+   "perceive_object"
+   "urobosim_msgs/PerceiveObjectAction"
+   *perceive-action-timeout*))
+
+(roslisp-utilities:register-ros-init-function make-urobosim-action-client)
 
 (defun ensure-input-params (object-type)
   (declare (type (or string symbol) object-type))
