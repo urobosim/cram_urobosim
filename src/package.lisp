@@ -31,11 +31,12 @@
 
 (defpackage cram-urobosim
   (:nicknames #:unreal)
-  (:use #:common-lisp)
+  (:use #:common-lisp #:cram-prolog)
   (:export
    ;; action-client
    #:call-perceive-action
    ;; low-level
    #:detect
+   #:perceive
    ;; process-module
    #:urobosim-perception-pm))

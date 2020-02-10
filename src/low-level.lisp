@@ -40,32 +40,43 @@
      (cut:current-timestamp)
      pose-in-map)))
 
-(defun extend-perceived-object-designator (input-designator name-pose-type-list)
-  (destructuring-bind (name pose type) name-pose-type-list
+(defun extend-perceived-object-designator (input-designator name-pose-pose-world-type-list)
+  (destructuring-bind (name pose pose-world type) name-pose-pose-world-type-list
     (let* ((pose-stamped-in-fixed-frame
              (cl-transforms-stamped:make-pose-stamped
               cram-tf:*fixed-frame*
               (cut:current-timestamp)
-              (cl-transforms:origin pose)
-              (cl-transforms:orientation pose)))
+              (cl-transforms:origin pose-world)
+              (cl-transforms:orientation pose-world)))
            (transform-stamped-in-fixed-frame
              (cram-tf:pose-stamped->transform-stamped
               pose-stamped-in-fixed-frame
               (roslisp-utilities:rosify-underscores-lisp-name name)))
            (pose-stamped-in-base-frame
-             (cram-tf:multiply-transform-stampeds
+             (cl-transforms-stamped:make-pose-stamped
               cram-tf:*robot-base-frame*
-              (roslisp-utilities:rosify-underscores-lisp-name name)
-              (cram-tf:transform-stamped-inv (robot-transform-in-map))
-              transform-stamped-in-fixed-frame
-              :result-as-pose-or-transform :pose))
+              (cut:current-timestamp)
+              (cl-transforms:origin pose)
+              (cl-transforms:orientation pose)))
            (transform-stamped-in-base-frame
-             (cram-tf:multiply-transform-stampeds
-              cram-tf:*robot-base-frame*
-              (roslisp-utilities:rosify-underscores-lisp-name name)
-              (cram-tf:transform-stamped-inv (robot-transform-in-map))
-              transform-stamped-in-fixed-frame
-              :result-as-pose-or-transform :transform)))
+             (cram-tf:pose-stamped->transform-stamped
+              pose-stamped-in-base-frame
+              (roslisp-utilities:rosify-underscores-lisp-name name)))
+           ; (pose-stamped-in-base-frame
+           ;   (cram-tf:multiply-transform-stampeds
+           ;    cram-tf:*robot-base-frame*
+           ;    (roslisp-utilities:rosify-underscores-lisp-name name)
+           ;    (cram-tf:transform-stamped-inv (robot-transform-in-map))
+           ;    transform-stamped-in-fixed-frame
+           ;    :result-as-pose-or-transform :pose))
+           ; (transform-stamped-in-base-frame
+           ;   (cram-tf:multiply-transform-stampeds
+           ;    cram-tf:*robot-base-frame*
+           ;    (roslisp-utilities:rosify-underscores-lisp-name name)
+           ;    (cram-tf:transform-stamped-inv (robot-transform-in-map))
+           ;    transform-stamped-in-fixed-frame
+           ;    :result-as-pose-or-transform :transform))
+           )
       (let ((output-designator
               (desig:copy-designator
                input-designator

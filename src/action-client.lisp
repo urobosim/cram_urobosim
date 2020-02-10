@@ -46,10 +46,10 @@
   (when (symbolp object-type)
     (setf object-type (symbol-name object-type))))
 
-(defun ensure-output-params (name-pose-type-list)
-  (destructuring-bind (name pose type)
-      name-pose-type-list
-    (list (intern name :keyword) pose type)))
+(defun ensure-output-params (name-pose-pose-world-type-list)
+  (destructuring-bind (name pose pose-world type)
+      name-pose-pose-world-type-list
+    (list (intern name :keyword) pose pose-world type)))
 
 (defun make-perceive-action-goal (object-type)
   (declare (type string object-type))
@@ -67,7 +67,8 @@
     (roslisp:ros-info (perceive-action) "perceive action finished.")
     (when (eq status :succeeded)
       (roslisp:with-fields ((name urobosim_msgs-msg:name)
-                            (pose-in-map urobosim_msgs-msg:pose_world))
+                            (pose-in-map urobosim_msgs-msg:pose_world)
+                            (pose-in-base urobosim_msgs-msg:pose))
           result
         (ensure-output-params
-         (list name (cl-transforms-stamped:from-msg pose-in-map) object-type))))))
+         (list name (cl-transforms-stamped:from-msg pose-in-base) (cl-transforms-stamped:from-msg pose-in-map) object-type))))))

@@ -10,8 +10,8 @@
 ;;;       notice, this list of conditions and the following disclaimer in the
 ;;;       documentation and/or other materials provided with the distribution.
 ;;;     * Neither the name of the Intelligent Autonomous Systems Group/
-;;;       Technische Universitaet Muenchen nor the names of its contributors 
-;;;       may be used to endorse or promote products derived from this software 
+;;;       Technische Universitaet Muenchen nor the names of its contributors
+;;;       may be used to endorse or promote products derived from this software
 ;;;       without specific prior written permission.
 ;;;
 ;;; THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
@@ -51,4 +51,6 @@
     ((:file "package")
      (:file "action-client" :depends-on ("package"))
      (:file "low-level" :depends-on ("package" "action-client"))
+     (:file "feeding-plans" :depends-on ("package"))
+     (:file "feeding-designators" :depends-on ("package" "feeding-plans"))
      (:file "process-module" :depends-on ("package" "low-level"))))))

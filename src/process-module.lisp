@@ -32,7 +32,9 @@
 (cpm:def-process-module urobosim-perception-pm (motion-designator)
   (destructuring-bind (command argument-1) (desig:reference motion-designator)
     (ecase command
-      (cram-common-designators:detect (detect argument-1)))))
+      (cram-common-designators:detect
+       (handler-case
+           (detect argument-1))))))
 
 (prolog:def-fact-group urobosim-pm (cpm:matching-process-module
                                     cpm:available-process-module)
@@ -42,4 +44,3 @@
 
   (prolog:<- (cpm:available-process-module urobosim-perception-pm)
     (prolog:not (cpm:projection-running ?_))))
-
